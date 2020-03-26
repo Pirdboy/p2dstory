@@ -4,9 +4,12 @@
 # build
 build
 
-# cpp and IDE
+# at creator
+*.autosave
 *.pro
 *.pro.user
+
+# cpp
 *.o
 *.a
 *.lib
