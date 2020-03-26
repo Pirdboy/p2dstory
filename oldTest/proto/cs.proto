@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option optimize_for = SPEED;
+
+message Hello
+{
+    bytes acc_name = 1;
+    bytes passwd = 2;
+}
+
+// 玩家信息,暂时只有uin
+message AccInfo
+{
+    uint32 uin = 1;
+}
+
+message CS_LoginReq
+{
+    bytes acc_name = 1;
+    bytes passwd = 2;
+}
+
+message CS_LoginRes
+{
+    enum Result 
+    {
+        OK = 0;
+        FAIL = 1;
+    }
+    Result res = 1;
+    AccInfo acc_info = 2;
+}
+
+message SS_LoginReq
+{
+    CS_LoginReq cs_login_req = 1;
+    bytes sid = 2;
+}
+
+message SS_LoginRes
+{
+    uint32 uin = 1;
+    bytes sid = 2;  // 回调检验使用
+}

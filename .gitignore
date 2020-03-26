@@ -1,0 +1,22 @@
+# MacOS
+.DS_Store
+
+# build
+build
+
+# cpp and IDE
+*.pro
+*.pro.user
+*.o
+*.a
+*.lib
+*.obj
+*.so
+*.dll
+*.dylib
+*.exe
+*.out
+
+# vscode
+.vscode
+.clang-format

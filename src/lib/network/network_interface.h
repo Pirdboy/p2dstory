@@ -1,0 +1,5 @@
+class NetworkInterface
+{
+public:
+    NetworkInterface();
+};
