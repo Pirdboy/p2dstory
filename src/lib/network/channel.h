@@ -31,8 +31,6 @@ private:
     Packet read_packet_;
     std::deque<Packet> send_packets_;
 
-    // MessageHandlers ???
-
 };
 
 }
