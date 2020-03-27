@@ -8,6 +8,8 @@
 
 using asio::ip::tcp;
 
+namespace p2d {
+
 namespace network {
 
 class NetworkInterface;
@@ -35,6 +37,7 @@ private:
 
 }
 
+}
 
 
 #endif // CHANNEL_H

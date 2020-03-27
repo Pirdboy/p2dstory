@@ -5,12 +5,14 @@
 
 using namespace std;
 
+namespace p2d {
+
 namespace network {
 
-NetworkInterface::NetworkInterface(asio::io_context &io_context, uint16_t port)
-    : io_context_(io_context), acceptor_(io_context)
+NetworkInterface::NetworkInterface(asio::io_context &io_context)
+    : io_context_(io_context), acceptor_(io_context), message_handler_(nullptr)
 {
-    this->initialize(port);
+
 }
 
 void NetworkInterface::initialize(uint16_t port)
@@ -25,7 +27,11 @@ void NetworkInterface::initialize(uint16_t port)
                            {
                                if(!ec)
                                {
-
+                                   //
+                                   // TODO: objectPool
+                                   Channel* c = new Channel(std::move(socket),*this);
+                                   this->registerChannel(this->peer_endpoint_, c);
+                                   c->run();
                                }
                                else
                                {
@@ -34,6 +40,16 @@ void NetworkInterface::initialize(uint16_t port)
                            });
 }
 
-
+inline void NetworkInterface::set_message_handler(MessageHandler *mh)
+{
+    message_handler_ = mh;
 }
 
+void NetworkInterface::registerChannel(const tcp::endpoint &addr, Channel *pChannel)
+{
+    address_channel_map_.insert(pair<tcp::endpoint,Channel*>(addr, pChannel));
+}
+
+} // namespace network
+
+} // namespace p2d
