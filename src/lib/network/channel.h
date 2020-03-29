@@ -3,8 +3,9 @@
 
 #include <asio.hpp>
 #include <deque>
+#include <system_error>
 
-#include "packet.h"
+#include "tcp_packet.h"
 
 using asio::ip::tcp;
 
@@ -17,19 +18,15 @@ class NetworkInterface;
 class Channel
 {
 public:
-    Channel(tcp::socket socket, NetworkInterface &net_interface);
+    Channel(tcp::socket socket, NetworkInterface *pNetworkInterface);
     void run();
-    void send(const Packet &packet);
+    tcp::socket *socket();
 private:
-    void processPacket(const Packet &packet);
-//    void doReadHeader();
-//    void doReadBody();
-//    void doWrite();
-
+    void onPacketReceived(const TCPPacket* pPacket, std::error_code ec);
     tcp::socket socket_;
-    NetworkInterface &net_interface_;
-    Packet read_packet_;
-    std::deque<Packet> send_packets_;
+    NetworkInterface *network_interface_ptr_;
+    TCPPacket read_packet_;
+    std::deque<TCPPacket*> send_packets;
 
 };
 

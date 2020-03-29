@@ -10,7 +10,7 @@ namespace p2d {
 namespace network {
 
 NetworkInterface::NetworkInterface(asio::io_context &io_context)
-    : io_context_(io_context), acceptor_(io_context), message_handler_(nullptr)
+    : io_context_(io_context), acceptor_(io_context), message_handler_ptr_(nullptr)
 {
 
 }
@@ -29,7 +29,7 @@ void NetworkInterface::initialize(uint16_t port)
                                {
                                    //
                                    // TODO: objectPool
-                                   Channel* c = new Channel(std::move(socket),*this);
+                                   Channel* c = new Channel(std::move(socket),this);
                                    this->registerChannel(this->peer_endpoint_, c);
                                    c->run();
                                }
@@ -40,14 +40,19 @@ void NetworkInterface::initialize(uint16_t port)
                            });
 }
 
-inline void NetworkInterface::set_message_handler(MessageHandler *mh)
+inline void NetworkInterface::set_message_handler(MessageHandler *pHandler)
 {
-    message_handler_ = mh;
+    message_handler_ptr_ = pHandler;
 }
 
 void NetworkInterface::registerChannel(const tcp::endpoint &addr, Channel *pChannel)
 {
     address_channel_map_.insert(pair<tcp::endpoint,Channel*>(addr, pChannel));
+}
+
+MessageHandler *NetworkInterface::message_handler()
+{
+    return message_handler_ptr_;
 }
 
 } // namespace network

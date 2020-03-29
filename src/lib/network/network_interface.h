@@ -18,8 +18,9 @@ class NetworkInterface
 {
 public:
     NetworkInterface(asio::io_context &io_context);
-    void set_message_handler(MessageHandler *mh);
+    void set_message_handler(MessageHandler *pHandler);
     void registerChannel(const tcp::endpoint& addr, Channel *pChannel);
+    MessageHandler* message_handler();
 private:
     void initialize(uint16_t port);
     using ChannelMap = std::map<tcp::endpoint, Channel*>;
@@ -27,7 +28,7 @@ private:
     asio::io_context &io_context_;
     tcp::acceptor acceptor_;
     tcp::endpoint peer_endpoint_;
-    MessageHandler *message_handler_;
+    MessageHandler *message_handler_ptr_;
 
 private:
     // 一些测试方法
